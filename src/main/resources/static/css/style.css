@@ -1,0 +1,71 @@
+@import url('http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css');
+
+.home_container {
+    background-color: rgba(131, 188, 188, 0.72);
+    text-align: center;
+
+    padding-top: 5%;
+    padding-bottom: 5%;
+
+}
+
+.top_nav {
+    width: 60%;
+    margin: auto;
+    margin-top: -2em;
+
+}
+
+.user_form{
+    padding: 5px;
+}
+
+
+.container {
+    background-color: rgba(255, 180, 44, 0.72);
+    text-align: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+
+}
+
+.container {
+    /*background-color: rgba(131, 188, 188, 0.72);*/
+    /*background: transparent url(https://i.stack.imgur.com/RL5UH.png) 50% 50% no-repeat;*/
+    /*background: rgba(255, 165, 0, 0.6) url(https://i.stack.imgur.com/RL5UH.png) 50% 50%;*/
+    /*background: rgba(255, 165, 0, 0.6) url(../img/fart-can-plate.png) 50% 50% ;*/
+    background-opacity: .5;
+    filter: alpha(opacity=.9);
+    /*opacity: .5;*/
+
+    /*color: #d8faff;*/
+    /*text-shadow: 4px 2px 2px rgba(58, 60, 36, 0.97);*/
+    background-blend-mode: hard-light;
+    min-width: 300px;
+    min-height: 300px;
+    /*box-shadow: inset 0 0 20px #0f0, inset 0 0 20px #0f0, inset 0 0 20px #0f0;*/
+    box-shadow: inset 0 0 20px #b0ccff, inset 0 0 20px #b0ccff, inset 0 0 20px #8aa7ff;
+}
+
+
+.foreground {
+    margin: auto;
+    background-color: rgba(34, 34, 34, 0.51);
+    /*border: 2px solid red;*/
+    /*padding-top: 2px;*/
+    /*padding-bottom: 2px;*/
+    padding: 3% 0% 4%;    width: 60%;
+    color: #d8faff;
+
+}
+
+a:link{
+    color: #aaa1ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color:lightseagreen;
+    text-decoration: none;
+
+}
