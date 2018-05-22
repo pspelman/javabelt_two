@@ -32,7 +32,8 @@
                     <c:if test="${errorMessage != null}">
                         <c:out value="${errorMessage}"></c:out>
                     </c:if>
-                    <form:form method="POST" action="/ideas/edit/${idea.id}" modelAttribute="idea" cssClass="user_form">
+                    <%--<form:form method="POST" action="/ideas/edit/${idea.id}" modelAttribute="idea" cssClass="user_form">--%>
+                    <form:form method="POST" action="/ideas/edit/" modelAttribute="idea" cssClass="user_form">
 
                         <form:label path="title">Title</form:label>
                         <form:input path="title" /><br/>
@@ -40,6 +41,7 @@
 
                         <form:hidden path="addedByUserId" name="added_by_id" value="${currentUser.getId()}" />
                         <form:hidden path="addedBy" name="addedBy" value="${currentUser.getId()}" />
+                        <form:hidden path="id" name="id" value="${idea.getId()}" />
 
                         <%--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
 

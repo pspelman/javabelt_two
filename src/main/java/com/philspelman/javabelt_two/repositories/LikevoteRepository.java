@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface LikevoteRepository extends CrudRepository<Likevote, LikevoteIdentity> {
     List<Likevote> findLikesByIdeaId(Long id);
+
+//    int findLikevoteByUsername(String username);
 }

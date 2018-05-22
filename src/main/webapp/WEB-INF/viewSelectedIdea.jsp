@@ -55,11 +55,11 @@ ${search_errors}
                     <%--#--%>
                     <%--</th>--%>
                     <th scope="col">
-                        Title
+                        User
                     </th>
-                    <th scope="col">
-                        Rating
-                    </th>
+                    <%--<th scope="col">--%>
+                        <%--Rating--%>
+                    <%--</th>--%>
 
                 </tr>
                 </thead>
@@ -73,13 +73,14 @@ ${search_errors}
                         <th scope="row">
                                 <%--${likesList.getUser().getUsername()}</a>--%>
                                 <%--${idea.name}--%>
+                            {Usernames who liked this}
 
                         </th>
-                        <td>
-                            this will be the total like
-                                <%--${likesList.getRating()}--%>
+                        <%--<td>--%>
+                            <%--this will be the total like--%>
+                                <%--&lt;%&ndash;${likesList.getRating()}&ndash;%&gt;--%>
 
-                        </td>
+                        <%--</td>--%>
 
                     </tr>
                 </c:forEach>

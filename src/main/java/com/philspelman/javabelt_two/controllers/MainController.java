@@ -216,10 +216,12 @@ public class MainController {
 
 
     //route for GET request to EDIT the details of a Idea
+//    @GetMapping("/ideas/edit/{id}")
     @GetMapping("/ideas/edit/{id}")
     public String editSelectedIdea(@PathVariable Long id,
                                    Principal principal,
                                    Model model) {
+        System.out.println("GET edit request");
         String username = principal.getName();
         model.addAttribute("currentUser", userService.findByUsername(username));
 
@@ -227,34 +229,65 @@ public class MainController {
         return "formEditIdea";
     }
 
-    //route for POST request to EDIT the details of a Idea
-    @PostMapping("/ideas/edit/{id}")
-    public String editSelectedIdea(@Valid @ModelAttribute("idea") Idea idea,
-                                   @PathVariable Long id,
-                                   Principal principal,
-                                   RedirectAttributes redirectAttributes,
-                                   Model model,
-                                   BindingResult bindingResult) {
+
+
+
+
+
+    @PostMapping("/ideas/edit")
+    public String editIdea(@Valid @ModelAttribute("idea") Idea idea,
+                           BindingResult bindingResult,
+                           Model model,
+                           HttpSession session,
+                           Principal principal) {
+
         String username = principal.getName();
         model.addAttribute("currentUser", userService.findByUsername(username));
 
-        //fixme: may need to re-add the idea
+        System.out.println("got POST request for EDIT idea ");
+//        userValidator.validate(user, bindingResult);
+        iterateErrorResults(bindingResult.getAllErrors());
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("idea", idea);
+
             return "formEditIdea";
-        } else {
-            ideaService.updateIdea(idea);
-
         }
-
-//        if (!ideaService.updateIdea(idea)) {
-//            model.addAttribute("idea", idea);
-//            model.addAttribute("unique", "already in database");
-//            return "formEditIdea";
-//        }
+            ideaService.updateIdea(idea);
         return "redirect:/";
     }
+//
+//    //route for POST request to EDIT the details of a Idea
+//    @PostMapping("/ideas/edit")
+//    public String editSelectedIdea(@Valid @ModelAttribute("idea") Idea idea,
+////                                   @PathVariable Long id,
+////                                   Principal principal,
+////                                   RedirectAttributes redirectAttributes,
+//                                   HttpSession httpSession,
+//                                   Model model,
+//                                   BindingResult bindingResult) {
+////        String username = principal.getName();
+////        model.addAttribute("currentUser", userService.findByUsername(username));
+//        System.out.println("trying to edit idea!");
+//
+//        //fixme: may need to re-add the idea
+//
+//        if (bindingResult.hasErrors()) {
+//            System.out.println("errors in the data");
+////            model.addAttribute("idea", idea);
+//            return "formEditIdea";
+//        } else {
+//            System.out.println("idea stuff: " + idea.toString());
+//            ideaService.updateIdea(idea);
+//            return "redirect:/";
+//        }
+//
+////        if (!ideaService.updateIdea(idea)) {
+////            model.addAttribute("idea", idea);
+////            model.addAttribute("unique", "already in database");
+////            return "formEditIdea";
+////        }
+//    }
 
 
     //route for POST request to add rating, stars, etc. associated with a Idea

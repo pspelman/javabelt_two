@@ -103,4 +103,12 @@ public class Idea {
         }
         return sum;
     }
+
+
+    @Override
+    public String toString() {
+        return String.format("Username: %s %nTitle: %s%n", getAddedBy().getUsername(), getTitle());
+    }
+
+
 }

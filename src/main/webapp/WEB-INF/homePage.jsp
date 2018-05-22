@@ -64,12 +64,22 @@
                         </td>
                         <td>
                                 <%--<fmt:formatNumber type="CURRENCY">${idea.rating}</fmt:formatNumber>--%>
-                            {RATING HERE}
+                            {LIKES HERE}
                                 <%--${idea.rating}--%>
-                                <%--License Number { ex: 001234 }--%>
                         </td>
                         <td>
-                            <button name="delete" class="table-btn btn-danger" value="Delete" onclick="location.href='/ideas/delete/${idea.id}';">remove</button>
+                            <c:choose>
+                                <c:when test="${currentUser.equals(idea.getAddedBy())}">
+                                    <div>
+                                        <button name="delete" class="table-btn btn-danger" value="Delete" onclick="location.href='/ideas/delete/${idea.id}';">remove</button>
+                                        <button name="edit" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/edit/${idea.id}';">Edit Details</button>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
 
                         </td>
                     </tr>

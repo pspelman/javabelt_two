@@ -76,6 +76,9 @@ public class IdeaService {
     //update
     public int updateIdea(Idea idea) {
         System.out.println("Need to try to update idea!");
+        System.out.println("received idea id: " + idea.getId());
+        System.out.println("and description: " + idea.getTitle());
+
 //        try {
 //            //insert actual update fields
 //            int affected = ideaRepository.updateIdea(idea.getTitle(), idea.getId());
@@ -100,7 +103,7 @@ public class IdeaService {
 
     // add a likevote by a user
     // must catch DataIntegrityViolationException because this is using the Likevote class, which implements persistable
-    public boolean rateIdea(int value, Long ideaId, String username) {
+    public boolean toggleLikevoteByUsername(String username) {
         try {
             System.out.println("TRYING TO CREATE NEW LIKEVOTE!!!");
             //FIXME: Make a new likevote to save
@@ -112,7 +115,6 @@ public class IdeaService {
             return false;
         }
     }
-
 
 
     //test for uniqueness (e.g., a tv show)
