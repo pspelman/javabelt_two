@@ -2,6 +2,7 @@ package com.philspelman.javabelt_two.services;
 
 import com.philspelman.javabelt_two.models.Idea;
 import com.philspelman.javabelt_two.models.Likevote;
+import com.philspelman.javabelt_two.models.LikevoteIdentity;
 import com.philspelman.javabelt_two.repositories.IdeaRepository;
 import com.philspelman.javabelt_two.repositories.LikevoteRepository;
 import com.philspelman.javabelt_two.repositories.UserRepository;
@@ -103,17 +104,65 @@ public class IdeaService {
 
     // add a likevote by a user
     // must catch DataIntegrityViolationException because this is using the Likevote class, which implements persistable
-    public boolean toggleLikevoteByUsername(String username) {
+    public boolean toggleLikevoteByUsername(Long ideaId, String username) {
+
         try {
-            System.out.println("TRYING TO CREATE NEW LIKEVOTE!!!");
-            //FIXME: Make a new likevote to save
-//            Likevote attemptToAddLikevote = new Likevote(value, userRepository.findByUsername(username), getIdea(ideaId));
-//            likevoteRepository.save(attemptToAddLikevote);
+            Likevote possibleNewLikevote = new Likevote(true, userRepository.findByUsername(username), getIdeaById(ideaId));
+            likevoteRepository.save(possibleNewLikevote);
             return true;
-        } catch (DataIntegrityViolationException err) {
-            System.out.println("error adding likevote: " + err.getMessage());
+        }
+        catch (DataIntegrityViolationException e) {
+            System.out.println("Exception caught saving like...it must already exist...so TOGGLE!");
+
+
+            List<Likevote> existingVote = likevoteRepository.findAllByIdeaAndUser(getIdeaById(ideaId), userRepository.findByUsername(username));
+            System.out.println("found existing vote: " + existingVote.size());
+
+            if (existingVote.size() == 1) {
+                Likevote upVote = existingVote.get(0);
+                Long userId = upVote.getUser().getId();
+//                Long ideaId = upVote.getIdea().getId();
+
+                int result;
+
+                if (upVote.getLikevote()) {
+                    upVote.setLikevote(false);
+                    likevoteRepository.updateLikevote(false, ideaId, userId );
+                    return true;
+                } else {
+                    upVote.setLikevote(true);
+                    likevoteRepository.updateLikevote(true, ideaId, userId );
+                    return true;
+                }
+
+//                int result = likevoteRepository.updateLikevote(upVote.getLikevote(), upVote.getUser().getId(), upVote.getIdea().getId());
+//                return ideaRepository.updateIdea(idea.getTitle(), idea.getId());
+
+            }
+
             return false;
         }
+//        //if there is NO record, create one
+//        if (likevoteRepository.findLikevoteByIdeaIdAndUserId()) {
+//            System.out.println("found something: " + likevoteRepository.findLikevoteByIdeaIdAndUserId());
+//        } else {
+//            System.out.println("found nothing");
+//
+//        }
+//        return false;
+        //if there IS a record, then toggle it
+
+//
+//        try {
+//            System.out.println("TRYING TO CREATE NEW LIKEVOTE!!!");
+//            //FIXME: Make a new likevote to save
+////            Likevote attemptToAddLikevote = new Likevote(value, userRepository.findByUsername(username), getIdea(ideaId));
+////            likevoteRepository.save(attemptToAddLikevote);
+//            return true;
+//        } catch (DataIntegrityViolationException err) {
+//            System.out.println("error adding likevote: " + err.getMessage());
+//            return false;
+//        }
     }
 
 

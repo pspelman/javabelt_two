@@ -291,18 +291,21 @@ public class MainController {
 
 
     //route for POST request to add rating, stars, etc. associated with a Idea
-    @PostMapping("/ideas/{id}/likevote")
+    @GetMapping("/ideas/likevote/{id}")
     public String toggleIdeaLikeByUser(@PathVariable Long id,
-                                         @RequestParam int val,
+//                                         @RequestParam int id,
                                          Principal principal,
                                          Model model,
-                                         RedirectAttributes redirectAttributes
-    ) {
+                                         RedirectAttributes redirectAttributes) {
         //logic to see if the thing can be added
         String username = principal.getName();
         model.addAttribute("currentUser", userService.findByUsername(username));
 
-        System.out.println("Trying to toggle the like for this user");
+        Long userId = userService.findByUsername(username).getId();
+
+        System.out.println("Trying to toggle the like for this user " + username);
+
+        ideaService.toggleLikevoteByUsername(id, username);
 
 //        if (val < 1 || val > 5) {
 //            redirectAttributes.addFlashAttribute("invalid", "Invalid rating");
@@ -313,7 +316,7 @@ public class MainController {
 //            return "redirect:/";
 //        }
 
-        return String.format(("redirect:/ideas/%d"), id);
+        return String.format("redirect:/ideas/view/%d", id);
     }
 
 

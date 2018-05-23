@@ -65,7 +65,7 @@ ${search_errors}
                 </thead>
                 <tbody>
                 <%--for loop can go here, or in the tr tag --%>
-                <c:forEach var="likesList" items="${likevotesList}" varStatus="loop" >
+                <c:forEach var="liker" items="${likevotesList}" varStatus="loop" >
                     <tr>
                             <%--<th scope="row">--%>
                             <%--${loop.index+1}--%>
@@ -73,7 +73,7 @@ ${search_errors}
                         <th scope="row">
                                 <%--${likesList.getUser().getUsername()}</a>--%>
                                 <%--${idea.name}--%>
-                            {Usernames who liked this}
+                            ${liker.getUser().getUsername()}
 
                         </th>
                         <%--<td>--%>
@@ -107,7 +107,7 @@ ${search_errors}
 
 
 
-        <button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/edit/${idea.id}';">Like</button>
+        <button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>
 
 
         Leave a likevote
