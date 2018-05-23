@@ -20,7 +20,7 @@ public class UserIdeaIdentity implements Serializable {
         this.userId = userId;
         this.ideaId = ideaId;
     }
-∑
+
     @Override
     public boolean equals(Object o ) {
         if(this == o) return true;

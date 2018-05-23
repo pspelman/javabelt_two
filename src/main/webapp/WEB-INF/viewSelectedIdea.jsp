@@ -105,7 +105,46 @@ ${search_errors}
 
 <%--todo: if current user is not the owner, allow like or unlike --%>
 
-
+    <%--<c:choose>--%>
+    <%--<c:when test="${currentUser.equals(idea.getAddedBy())}">--%>
+    <%--<div>--%>
+    <%--You submitted this (cannot like / unlike)--%>
+    <%--&lt;%&ndash;<button name="edit" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/edit/${idea.id}';">Edit Details</button>&ndash;%&gt;--%>
+    <%--</div>--%>
+    <%--</c:when>--%>
+    <%--<c:otherwise>--%>
+    <%--<div>--%>
+    <%--You did not submit this<br/>--%>
+    <%--<c:choose>--%>
+    <%--<c:set var="contains" value="false" />--%>
+    <%--<c:forEach var="likevote" items="${likevotesList}">--%>
+    <%--<c:if test="${likevote.getUserId().equals(currentUser.getUserId())}">--%>
+    <%--<c:set var="contains" value="true" />--%>
+    <%--</c:if>--%>
+    <%--</c:forEach>--%>
+    <%--<c:if test="contains eq true" >--%>
+    <%--<div>--%>
+    <%--You liked this--%>
+    <%--</div>--%>
+    <%--</c:if>--%>
+    <%--<c:otherwise>--%>
+    <%--<div>--%>
+    <%--you have not liked this--%>
+    <%--</div>--%>
+    <%--</c:otherwise>--%>
+    <%--&lt;%&ndash;<c:when test="${likevotesList.contains(currentUser)}">&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</c:when>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;<c:otherwise>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;<div>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;You have not liked this<br/>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;&lt;%&ndash;<button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>&ndash;%&gt;&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</c:otherwise>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</c:choose>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;&lt;%&ndash;<button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>&ndash;%&gt;&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+    <%--</c:otherwise>--%>
+    <%--</c:choose>--%>
 
         <button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>
 

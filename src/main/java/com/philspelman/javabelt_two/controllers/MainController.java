@@ -108,7 +108,7 @@ public class MainController {
         System.out.println("reached the login request mapping");
         if (error != null) {
             model.addAttribute("errorMessage", "Invalid Credentials, Please try again");
-            return "registrationPage";
+            return "loginPage";
         }
         if (logout != null) {
             //meaning they ARE logging out
