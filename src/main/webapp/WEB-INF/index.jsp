@@ -28,7 +28,6 @@ ${search_errors}
     <div class="foreground">
         <h3></h3>
         <div>
-            This is a test div!<br/>
             <sec:authorize access="isAnonymous()">
                 User is NOT logged in
             </sec:authorize>

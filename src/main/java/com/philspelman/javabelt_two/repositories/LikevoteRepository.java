@@ -22,12 +22,26 @@ public interface LikevoteRepository extends CrudRepository<Likevote, LikevoteIde
 
 
 
-
+//
 
     @Transactional
     @Modifying
-    @Query(value = " UPDATE likevotes t SET t.likevote = ?1 WHERE t.idea_id = ?2 AND t.user_id = ?3", nativeQuery = true)
-    int updateLikevote(boolean vote, Long ideaId, Long userId);
+    @Query("update Likevote d set d.likevote = ?1 WHERE d.idea = ?2 AND d.user = ?3 ")
+    int updateLikevote(boolean vote, Idea idea, User user);
+
+//    int setNameForOne(String name, Long id);
+
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = " UPDATE likevotes t SET t.likevote = ?1 WHERE t.idea_id = ?2 AND t.user_id = ?3")
+//    int updateLikevote(boolean vote, Long ideaId, Long userId);
+
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = "UPDATE likevotes t SET t.likevote = " + vote + "WHERE t.idea_id = " + ideaId + " AND t.user_id = " + userId, nativeQuery = true)
+//    int updateLikevote(boolean vote, Long ideaId, Long userId);
 
 
 

@@ -21,11 +21,11 @@ public class Likevote implements Persistable<LikevoteIdentity> {
     private boolean likevote;
 
     //add the manyToOne relationship between the userId and one for the ideaId
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("userId")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("ideaId")
     private Idea idea;
 
@@ -87,6 +87,11 @@ public class Likevote implements Persistable<LikevoteIdentity> {
 
     public void setUpdate(boolean update) {
         this.update = update;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s, by: %s like: " + this.likevote, this.id, this.idea.getTitle(), this.user.getUsername());
     }
 }
 

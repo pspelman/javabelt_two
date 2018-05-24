@@ -126,6 +126,8 @@ public class MainController {
 
         String username = principal.getName();
         model.addAttribute("currentUser", userService.findByUsername(username));
+
+
         model.addAttribute("heading_message", "TV Shows");
 
         //get all ideas

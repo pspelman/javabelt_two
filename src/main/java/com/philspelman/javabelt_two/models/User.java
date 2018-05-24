@@ -1,5 +1,7 @@
 package com.philspelman.javabelt_two.models;
 
+import com.philspelman.javabelt_two.validator.EmailWithTld;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -25,7 +27,7 @@ public class User {
     private String username;
 
     //next is an email field. It is required
-    @NotNull @Email
+    @NotNull @EmailWithTld
     @Size(min = 3, message = "Email must be at least 3 characters long")
     private String email;
 

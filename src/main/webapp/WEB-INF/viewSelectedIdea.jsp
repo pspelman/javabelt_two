@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <title>Welcome Page</title>
+
+    <script type="javascript">
+        var setLikeButtonText = function() {
+            console.log(`like button text setting`,);
+
+            document.getElementById("target").innerText = "POOP";
+        }
+    </script>
 </head>
 <body>
 ${search_errors}
@@ -24,6 +32,9 @@ ${search_errors}
     </t:generic_navbar>
 
     <br/>
+    <div id="target">
+
+    </div>
     <div class="idea_info">
 
         <%--<h2>Heading: ${heading_message}</h2>--%>
@@ -37,7 +48,7 @@ ${search_errors}
             </c:when>
             <c:otherwise>
                 <div>
-                    You did not submit this
+                    Submitted by: ${idea.getAddedBy().getUsername()}
                 </div>
             </c:otherwise>
         </c:choose>
@@ -54,9 +65,9 @@ ${search_errors}
                     <%--<th scope="col">--%>
                     <%--#--%>
                     <%--</th>--%>
-                    <th scope="col">
-                        User
-                    </th>
+                    <%--<th scope="col">--%>
+                        <%--User--%>
+                    <%--</th>--%>
                     <%--<th scope="col">--%>
                         <%--Rating--%>
                     <%--</th>--%>
@@ -102,57 +113,68 @@ ${search_errors}
 
         <%--</form:form>--%>
 
+    <c:choose>
 
-<%--todo: if current user is not the owner, allow like or unlike --%>
+        <c:when test="${currentUser.equals(idea.getAddedBy())}">
 
-    <%--<c:choose>--%>
-    <%--<c:when test="${currentUser.equals(idea.getAddedBy())}">--%>
-    <%--<div>--%>
-    <%--You submitted this (cannot like / unlike)--%>
-    <%--&lt;%&ndash;<button name="edit" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/edit/${idea.id}';">Edit Details</button>&ndash;%&gt;--%>
-    <%--</div>--%>
-    <%--</c:when>--%>
-    <%--<c:otherwise>--%>
-    <%--<div>--%>
-    <%--You did not submit this<br/>--%>
-    <%--<c:choose>--%>
-    <%--<c:set var="contains" value="false" />--%>
-    <%--<c:forEach var="likevote" items="${likevotesList}">--%>
-    <%--<c:if test="${likevote.getUserId().equals(currentUser.getUserId())}">--%>
-    <%--<c:set var="contains" value="true" />--%>
-    <%--</c:if>--%>
-    <%--</c:forEach>--%>
-    <%--<c:if test="contains eq true" >--%>
-    <%--<div>--%>
-    <%--You liked this--%>
-    <%--</div>--%>
-    <%--</c:if>--%>
-    <%--<c:otherwise>--%>
-    <%--<div>--%>
-    <%--you have not liked this--%>
-    <%--</div>--%>
-    <%--</c:otherwise>--%>
-    <%--&lt;%&ndash;<c:when test="${likevotesList.contains(currentUser)}">&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</c:when>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;<c:otherwise>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;<div>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;You have not liked this<br/>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;&lt;%&ndash;<button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>&ndash;%&gt;&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</c:otherwise>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</c:choose>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;&lt;%&ndash;<button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>&ndash;%&gt;&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--</c:otherwise>--%>
-    <%--</c:choose>--%>
+            <div>
+            You submitted this (cannot like / unlike)
+            <%--<button name="edit" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/edit/${idea.id}';">Edit Details</button>--%>
+            </div>
 
-        <button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>
+        </c:when>
 
+    <%-- THIS is if the idea was NOT submitted by the logged in user --%>
+        <c:otherwise>
+            <div>
+        <c:set var="contains" value="false" />
+            <c:forEach var="likevote" items="${likevotesList}">
+                <c:if test="${likevote.getUser().getId().equals(currentUser.getId())}">
+                    <%--<c:out value="YOU LIKED THIS"/>--%>
+                    <c:set var="contains" value="true"/>
+                    <%--<script>--%>
+                        <%--setLikeButtonText();--%>
+                    <%--</script>--%>
+                </c:if>
+        </c:forEach>
+                <c:choose>
+                    <c:when test="${contains}">
+                        <script>
+                            document.getElementById("likevoteButton").value = "newButtonValue";
+                        </script>
+                        <button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Unlike</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>
+                    </c:otherwise>
 
-        Leave a likevote
+                </c:choose>
+                <div id="buttonspace">
+                </div>
+
+            <%--<c:if test="${contains==true}" >--%>
+                <div>
+                <%--You liked this--%>
+                </div>
+        <div>
+        <%--you have not liked this--%>
+        </div>
+        </c:otherwise>
+    </c:choose>
 
     </div>
 
+    <%--<c:when test="${likevotesList.contains(currentUser)}">--%>
+    <%--</c:when>--%>
+    <%--<c:otherwise>--%>
+    <%--<div>--%>
+    <%--You have not liked this<br/>--%>
+    <%--&lt;%&ndash;<button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>&ndash;%&gt;--%>
+    <%--</div>--%>
+    <%--</c:otherwise>--%>
+    <%--</c:choose>--%>
+    <%--&lt;%&ndash;<button name="rate" class="table-btn btn-inverse" value="Edit" onclick="location.href='/ideas/likevote/${idea.id}';">Like</button>&ndash;%&gt;--%>
+    <%--</div>--%>
 
 </div>
 </body>

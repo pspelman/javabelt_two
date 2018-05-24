@@ -6,10 +6,15 @@ import com.philspelman.javabelt_two.models.LikevoteIdentity;
 import com.philspelman.javabelt_two.repositories.IdeaRepository;
 import com.philspelman.javabelt_two.repositories.LikevoteRepository;
 import com.philspelman.javabelt_two.repositories.UserRepository;
+import org.hibernate.Session;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.metamodel.Metamodel;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IdeaService {
@@ -106,42 +111,77 @@ public class IdeaService {
     // must catch DataIntegrityViolationException because this is using the Likevote class, which implements persistable
     public boolean toggleLikevoteByUsername(Long ideaId, String username) {
 
+        List<Likevote> existingVote = likevoteRepository.findAllByIdeaAndUser(getIdeaById(ideaId), userRepository.findByUsername(username));
+        System.out.println("found existing vote: " + existingVote.size());
+
+
         try {
             Likevote possibleNewLikevote = new Likevote(true, userRepository.findByUsername(username), getIdeaById(ideaId));
             likevoteRepository.save(possibleNewLikevote);
             return true;
+        } catch (DataIntegrityViolationException e) {
+
+            System.out.println("Exception caught deleting like...");
+            Likevote upVote = existingVote.get(0);
+            likevoteRepository.delete(existingVote.get(0));
+//            likevoteRepository.save((Likevote) (existingVote.get(0))).setLikevote(false);
+
+            return true;
+
         }
-        catch (DataIntegrityViolationException e) {
-            System.out.println("Exception caught saving like...it must already exist...so TOGGLE!");
+    }
+//
+//            if (existingVote.size() == 1) {
+//                System.out.println("size was 1, getting the record to delete");
+//            } else {
+//                Likevote possibleNewLikevote = new Likevote(true, userRepository.findByUsername(username), getIdeaById(ideaId));
+//                likevoteRepository.save(possibleNewLikevote);
+//            }
+//            return false;
+//        }
 
+            //delete it
 
-            List<Likevote> existingVote = likevoteRepository.findAllByIdeaAndUser(getIdeaById(ideaId), userRepository.findByUsername(username));
-            System.out.println("found existing vote: " + existingVote.size());
+//            Long userId = upVote.getUser().getId();
+//
+//            int result;
+//
+//            System.out.println("existing vote: " + upVote.toString());
+//            Likevote modifyLikevote = new Likevote(false, upVote.getUser(), upVote.getIdea());
 
-            if (existingVote.size() == 1) {
-                Likevote upVote = existingVote.get(0);
-                Long userId = upVote.getUser().getId();
-//                Long ideaId = upVote.getIdea().getId();
+//            try {
+//
+////            Likevote possibleNewLikevote = new Likevote(true, userRepository.findByUsername(username), getIdeaById(ideaId));
+////            likevoteRepository.save(possibleNewLikevote);
+//                return true;
+//            } catch (DataIntegrityViolationException e) {
+//                System.out.println("Exception caught deleting like...");
+////                System.out.println("Exception caught saving like...it must already exist...so TOGGLE!");
+//
+//
+////                if (upVote.getLikevote()) {
+////                    System.out.println("the likevote WAS true (meaning liked)...setting to false");
+////
+////                    upVote.setLikevote(false);
+////                    return updateLikevote(upVote);
+////
+//////                    likevoteRepository.updateLikevote(false, ideaRepository.findOneById(ideaId), userRepository.findById(userId).get() );
+////                } else {
+////                    upVote.setLikevote(true);
+////                    return updateLikevote(upVote);
+//////                    likevoteRepository.updateLikevote(true, ideaRepository.findOneById(ideaId), userRepository.findById(userId).get() );
+//////                    likevoteRepository.updateLikevote(true, ideaId, userId );
+////                }
+//
+////                int result = likevoteRepository.updateLikevote(upVote.getLikevote(), upVote.getUser().getId(), upVote.getIdea().getId());
+////                return ideaRepository.updateIdea(idea.getTitle(), idea.getId());
+//                return false;
+//
+//            }
+//        }
+//    }
 
-                int result;
-
-                if (upVote.getLikevote()) {
-                    upVote.setLikevote(false);
-                    likevoteRepository.updateLikevote(false, ideaId, userId );
-                    return true;
-                } else {
-                    upVote.setLikevote(true);
-                    likevoteRepository.updateLikevote(true, ideaId, userId );
-                    return true;
-                }
-
-//                int result = likevoteRepository.updateLikevote(upVote.getLikevote(), upVote.getUser().getId(), upVote.getIdea().getId());
-//                return ideaRepository.updateIdea(idea.getTitle(), idea.getId());
-
-            }
-
-            return false;
-        }
+//        }
 //        //if there is NO record, create one
 //        if (likevoteRepository.findLikevoteByIdeaIdAndUserId()) {
 //            System.out.println("found something: " + likevoteRepository.findLikevoteByIdeaIdAndUserId());
@@ -150,7 +190,7 @@ public class IdeaService {
 //
 //        }
 //        return false;
-        //if there IS a record, then toggle it
+            //if there IS a record, then toggle it
 
 //
 //        try {
@@ -163,6 +203,15 @@ public class IdeaService {
 //            System.out.println("error adding likevote: " + err.getMessage());
 //            return false;
 //        }
+
+    private boolean updateLikevote(Likevote upVote) {
+        try {
+            likevoteRepository.save(upVote);
+            return true;
+        } catch (Exception err) {
+            System.out.println("Error trying to save / update");
+            return false;
+        }
     }
 
 
@@ -186,3 +235,95 @@ public class IdeaService {
         return likevoteRepository.findLikesByIdeaId(id);
     }
 }
+
+
+
+//
+//        EntityManagerFactory factory = new EntityManagerFactory() {
+//@Override
+//public EntityManager createEntityManager() {
+//        return null;
+//        }
+//
+//@Override
+//public EntityManager createEntityManager(Map map) {
+//        return null;
+//        }
+//
+//@Override
+//public EntityManager createEntityManager(SynchronizationType synchronizationType) {
+//        return null;
+//        }
+//
+//@Override
+//public EntityManager createEntityManager(SynchronizationType synchronizationType, Map map) {
+//        return null;
+//        }
+//
+//@Override
+//public CriteriaBuilder getCriteriaBuilder() {
+//        return null;
+//        }
+//
+//@Override
+//public Metamodel getMetamodel() {
+//        return null;
+//        }
+//
+//@Override
+//public boolean isOpen() {
+//        return false;
+//        }
+//
+//@Override
+//public void close() {
+//
+//        }
+//
+//@Override
+//public Map<String, Object> getProperties() {
+//        return null;
+//        }
+//
+//@Override
+//public Cache getCache() {
+//        return null;
+//        }
+//
+//@Override
+//public PersistenceUnitUtil getPersistenceUnitUtil() {
+//        return null;
+//        }
+//
+//@Override
+//public void addNamedQuery(String name, Query query) {
+//
+//        }
+//
+//@Override
+//public <T> T unwrap(Class<T> cls) {
+//        return null;
+//        }
+//
+//@Override
+//public <T> void addNamedEntityGraph(String graphName, EntityGraph<T> entityGraph) {
+//
+//        }
+//        };
+//        EntityManager entityManager = factory.createEntityManager();
+//        Session session = entityManager.unwrap( Session.class );
+//        int updatedEntities = entityManager.createQuery(
+//        "update Likevote l set p.likevote = :newVote where l.idea_id = :ideaId and l.user_id = :userId" )
+//        .setParameter( "newVote", false )
+//        .setParameter( "ideaId", 1 )
+//        .setParameter( "userId", 2 )
+//        .executeUpdate();
+//
+////                Session session = new Session();
+////                int updatedEntities = session.createQuery(
+////                        "update Person " +
+////                                "set name = :newName " +
+////                                "where name = :oldName" )
+////                        .setParameter( "oldName", oldName )
+////                        .setParameter( "newName", newName )
+////                        .executeUpdate();
